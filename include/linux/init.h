@@ -148,6 +148,7 @@ void setup_arch(char **);
 void prepare_namespace(void);
 void __init load_default_modules(void);
 int __init init_rootfs(void);
+void wait_for_rootfs(void);
 
 #ifdef CONFIG_DEBUG_RODATA
 void mark_rodata_ro(void);

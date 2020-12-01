@@ -673,6 +673,10 @@ static void spi_set_cs(struct spi_device *spi, bool enable)
 	if (spi->mode & SPI_CS_HIGH)
 		enable = !enable;
 
+	if(spi->spi_gpio_cs>0)
+	{
+		gpio_set_value(spi->spi_gpio_cs,!enable);
+	}
 	if (gpio_is_valid(spi->cs_gpio))
 		gpio_set_value(spi->cs_gpio, !enable);
 	else if (spi->master->set_cs)
@@ -903,8 +907,6 @@ static int spi_map_msg(struct spi_master *master, struct spi_message *msg)
 		if (max_tx || max_rx) {
 			list_for_each_entry(xfer, &msg->transfers,
 					    transfer_list) {
-				if (!xfer->len)
-					continue;
 				if (!xfer->tx_buf)
 					xfer->tx_buf = master->dummy_tx;
 				if (!xfer->rx_buf)
@@ -1521,6 +1523,18 @@ of_register_spi_device(struct spi_master *master, struct device_node *nc)
 	}
 	spi->max_speed_hz = value;
 
+	spi->spi_gpio_cs=of_get_named_gpio(nc,"spi-gpio-cs",0);
+	if(spi->spi_gpio_cs>0)
+	{
+		printk("spi->spi_gpio_cs=%d\n",spi->spi_gpio_cs);
+		rc = gpio_request(spi->spi_gpio_cs, "spi0_gpio_cs");
+       		if (rc != 0) {
+                	gpio_free(spi->spi_gpio_cs);
+                printk("gpio request spi_gpio_cs  failed\n");
+        	}
+        	else
+                    gpio_direction_output(spi->spi_gpio_cs, 1);
+        }	
 	/* Store a pointer to the node in the device structure */
 	of_node_get(nc);
 	spi->dev.of_node = nc;

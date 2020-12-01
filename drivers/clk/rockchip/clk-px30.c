@@ -1068,7 +1068,7 @@ static void __init px30_clk_init(struct device_node *np)
 				   PX30_GRF_SOC_STATUS0);
 	rockchip_clk_register_branches(ctx, px30_clk_branches,
 				       ARRAY_SIZE(px30_clk_branches));
-	if (of_machine_is_compatible("rockchip,px30"))
+	if (of_machine_is_compatible("adlink,lec-px30"))
 		rockchip_clk_register_branches(ctx, px30_gpu_src_clk,
 				       ARRAY_SIZE(px30_gpu_src_clk));
 	else

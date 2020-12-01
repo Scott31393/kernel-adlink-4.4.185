@@ -29,6 +29,7 @@
 #include <linux/syscore_ops.h>
 #include <linux/reboot.h>
 #include <linux/security.h>
+#include <linux/init.h>
 
 #include <generated/utsrelease.h>
 
@@ -332,6 +333,14 @@ static int fw_get_filesystem_firmware(struct device *device,
 	path = __getname();
 	if (!path)
 		return -ENOMEM;
+
+	/* Before any file access we have to wait for rootfs.
+
+	   In case of built-in module we can race with kernel init
+
+	   thread, which has not mounted rootfs yet */
+
+	wait_for_rootfs();
 
 	for (i = 0; i < ARRAY_SIZE(fw_path); i++) {
 		struct file *file;

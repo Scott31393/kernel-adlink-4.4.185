@@ -164,7 +164,7 @@ out:
 }
 static const struct of_device_id rockchip_cpufreq_of_match[] = {
 	{
-		.compatible = "rockchip,px30",
+		.compatible = "adlink,lec-px30",
 		.data = (void *)&px30_get_soc_info,
 	},
 	{

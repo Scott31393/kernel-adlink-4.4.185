@@ -597,7 +597,7 @@ void rk_serial_debug_init(void __iomem *base, phys_addr_t phy_base,
 		t->pdata.console_write = console_write;
 #endif
 
-	pdev->name = "fiq_debugger";
+	pdev->name = "ff160000(fiq_debugger)";
 	pdev->id = rk_fiq_debugger_id++;
 	pdev->dev.platform_data = &t->pdata;
 	pdev->resource = res;
@@ -636,7 +636,7 @@ void rk_serial_debug_init_dummy(void)
 		goto out2;
 	}
 
-	pdev->name = "fiq_debugger";
+	pdev->name = "ff160000(fiq_debugger)";
 	pdev->id = rk_fiq_debugger_id++;
 	pdev->dev.platform_data = &t->pdata;
 	if (platform_device_register(pdev)) {

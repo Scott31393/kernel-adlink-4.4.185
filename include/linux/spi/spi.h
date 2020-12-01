@@ -158,6 +158,7 @@ struct spi_device {
 	void			*controller_data;
 	char			modalias[SPI_NAME_SIZE];
 	int			cs_gpio;	/* chip select gpio */
+	int 			spi_gpio_cs;/*add by lm*/
 
 	/* the statistics */
 	struct spi_statistics	statistics;

@@ -1126,7 +1126,7 @@ static void fiq_debugger_console_write(struct console *co,
 }
 
 static struct console fiq_debugger_console = {
-	.name = "ttyFIQ",
+	.name = "ttyS",
 	.device = fiq_debugger_console_device,
 	.write = fiq_debugger_console_write,
 	.flags = CON_PRINTBUFFER | CON_ANYTIME | CON_ENABLED,
@@ -1282,7 +1282,7 @@ static int fiq_debugger_tty_init(void)
 
 	fiq_tty_driver->owner		= THIS_MODULE;
 	fiq_tty_driver->driver_name	= "fiq-debugger";
-	fiq_tty_driver->name		= "ttyFIQ";
+	fiq_tty_driver->name		= "ttyS";
 	fiq_tty_driver->type		= TTY_DRIVER_TYPE_SERIAL;
 	fiq_tty_driver->subtype		= SERIAL_TYPE_NORMAL;
 	fiq_tty_driver->init_termios	= tty_std_termios;
@@ -1342,7 +1342,7 @@ static int fiq_debugger_tty_init_one(struct fiq_debugger_state *state)
 
 	device_set_wakeup_capable(tty_dev, 1);
 
-	pr_info("Registered fiq debugger ttyFIQ%d\n", state->pdev->id);
+	pr_info("Registered fiq debugger ttyS%d\n", state->pdev->id);
 
 	return 0;
 
@@ -1561,7 +1561,7 @@ static const struct dev_pm_ops fiq_debugger_dev_pm_ops = {
 static struct platform_driver fiq_debugger_driver = {
 	.probe	= fiq_debugger_probe,
 	.driver	= {
-		.name	= "fiq_debugger",
+		.name   = "ff160000(fiq_debugger)",
 		.pm	= &fiq_debugger_dev_pm_ops,
 	},
 };

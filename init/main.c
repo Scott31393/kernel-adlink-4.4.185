@@ -966,6 +966,9 @@ static inline void mark_readonly(void)
 }
 #endif
 
+
+
+
 static int __ref kernel_init(void *unused)
 {
 	int ret;
@@ -1009,6 +1012,27 @@ static int __ref kernel_init(void *unused)
 
 	panic("No working init found.  Try passing init= option to kernel. "
 	      "See Linux Documentation/init.txt for guidance.");
+}
+
+
+static DECLARE_WAIT_QUEUE_HEAD(rootfs_waitq);
+static bool rootfs_mounted;
+
+void wait_for_rootfs(void)
+{
+	/* Avoid waiting for ourselves */
+	if (WARN_ON(is_global_init(current)))
+		return;
+	else
+		wait_event(rootfs_waitq, rootfs_mounted);
+}
+
+EXPORT_SYMBOL(wait_for_rootfs);
+
+static inline void wake_up_rootfs_waiters(void)
+{
+	rootfs_mounted = true;
+	wake_up_all(&rootfs_waitq);
 }
 
 static noinline void __init kernel_init_freeable(void)
@@ -1071,7 +1095,10 @@ static noinline void __init kernel_init_freeable(void)
 	 * Ok, we have completed the initial bootup, and
 	 * we're essentially up and running. Get rid of the
 	 * initmem segments and start the user-mode stuff..
-	 *
+         */ 
+	wake_up_rootfs_waiters();
+
+ 	/*
 	 * rootfs is available now, try loading the public keys
 	 * and default modules
 	 */

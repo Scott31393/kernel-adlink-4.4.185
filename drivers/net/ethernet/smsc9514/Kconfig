@@ -1,0 +1,25 @@
+#
+# SMSC95XX USB to Ethernet controller device configuration
+#
+
+menuconfig NET_VENDOR_SMSC9514
+       tristate 'LAN 9514 driver configuration'
+       help
+         This enables SMSC95XX USB to Ethernet controller board specific character
+         devices.
+
+if NET_VENDOR_SMSC9514
+
+config SMSC9500
+       tristate "SMSC 9500 module"
+       help
+          This driver is required for smsc9500 module.
+
+config SMSCUSBNET
+       tristate "SMSCUSBNET module"
+       help
+          This driver is required for smsc usb net module.
+
+endif # NET_VENDOR_SMSC9514
+
+
