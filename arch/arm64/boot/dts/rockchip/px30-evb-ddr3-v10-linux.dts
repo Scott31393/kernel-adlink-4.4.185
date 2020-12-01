@@ -28,7 +28,13 @@
 / {
 
 	model = "ADLINK ARM, LEC-PX30";
-        compatible = "adlink,lec-px30";
+    compatible = "adlink,lec-px30";
+
+	chosen {
+ 		//bootargs = "earlycon=uart8250,mmio32,0xff160000 swiotlb=1 console=ttyFIQ0 rw root=PARTUUID=614e0000-0000 rootwait";
+		bootargs = "sd androidboot.mode=normal rw rootwait earlycon=uart8250,mmio32,0xff160000 swiotlb=1 console=ttyFIQ0 root=/dev/mmcblk0p13";
+	/*	 bootargs = "console=tty1 rw root=PARTUUID=614e0000-0000 rootwait";*/
+	};
 
 	adc-keys {
 		compatible = "adc-keys";
